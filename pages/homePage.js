@@ -5,13 +5,23 @@ class HomePage {
     this.page = page;
   }
 
-  // Generic check for logged-in state: presence of logout or profile menu
-  profileMenu() {
-    return this.page.locator('text=Logout, button:has-text("Logout"), a:has-text("Logout"), [aria-label="account"], [data-test="user-menu"]').first();
+  profileButton() {
+    return this.page.getByRole('button', { name: 'UN Printing 1 UN Printing 1' });
+  }
+
+  signOutButton() {
+    return this.page.getByRole('button', { name: 'Sign Out' });
   }
 
   async assertLoggedIn() {
-    await expect(this.profileMenu()).toBeVisible({ timeout: 10000 });
+    await expect(this.profileButton()).toBeVisible({ timeout: 10000 });
+  }
+
+  async logout() {
+    if (await this.profileButton().isVisible()) {
+      await this.profileButton().click();
+    }
+    await this.signOutButton().click();
   }
 
   async takeScreenshot(name = 'home.png') {
